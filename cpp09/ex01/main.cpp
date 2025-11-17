@@ -15,7 +15,7 @@ int main(int ac, char **av)
 		int result = r.evaluate(av[1]);
 		std::cout << result << std::endl;
 	} catch (const std::exception &e) {
-		std::cout << "Error" << std::endl;
+		std::cout << e.what() << std::endl;
 		return 1;
 	}
 
