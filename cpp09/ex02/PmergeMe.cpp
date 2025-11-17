@@ -26,14 +26,9 @@ bool PmergeMe::parse(int ac, char **av)
 	{
 		std::string s(av[i]);
 
-		if (s.empty())
-			return false;
-
 		for (size_t j = 0; j < s.size(); j++)
-		{
 			if (!isdigit(s[j]))
 				return false;
-		}
 
 		std::istringstream iss(s);
 		long n;
@@ -42,14 +37,13 @@ bool PmergeMe::parse(int ac, char **av)
 		if (iss.fail() || n < 0 || n > INT_MAX)
 			return false;
 
-		for (size_t j = 0; j < _v.size(); j++)
-		{
-			if (_v[j] == static_cast<int>(n))
-				return false;
-		}
+		int val = static_cast<int>(n);
+		
+		if (std::find(_v.begin(), _v.end(), val) != _v.end())
+			return false;
 
-		_v.push_back(static_cast<int>(n));
-		_d.push_back(static_cast<int>(n));
+		_v.push_back(val);
+		_d.push_back(val);
 	}
 	
 	return true;
@@ -78,8 +72,7 @@ static std::vector<int> fordJohnsonSortVec(std::vector<int> input)
 	}
 
 	int odd = -1;
-	bool hasOdd = (input.size() % 2 != 0);
-	if (hasOdd)
+	if (input.size() % 2 != 0)
 		odd = input[input.size() - 1];
 
 	std::vector<int> S = fordJohnsonSortVec(big);
@@ -90,7 +83,7 @@ static std::vector<int> fordJohnsonSortVec(std::vector<int> input)
 		S.insert(it, small[i]);
 	}
 
-	if (hasOdd)
+	if (odd != -1)
 	{
 		std::vector<int>::iterator it = std::lower_bound(S.begin(), S.end(), odd);
 		S.insert(it, odd);
@@ -122,8 +115,7 @@ static std::deque<int> fordJohnsonSortDeq(std::deque<int> input)
 	}
 
 	int odd = -1;
-	bool hasOdd = (input.size() % 2 != 0);
-	if (hasOdd)
+	if (input.size() % 2 != 0)
 		odd = input[input.size() - 1];
 
 	std::deque<int> S = fordJohnsonSortDeq(big);
@@ -134,7 +126,7 @@ static std::deque<int> fordJohnsonSortDeq(std::deque<int> input)
 		S.insert(it, small[i]);
 	}
 
-	if (hasOdd)
+	if (odd != -1)
 	{
 		std::deque<int>::iterator it = std::lower_bound(S.begin(), S.end(), odd);
 		S.insert(it, odd);
@@ -163,8 +155,8 @@ void PmergeMe::run()
 		std::cout << _v[i] << " ";
 	std::cout << std::endl;
 
-	double durV = (double)(endV - startV) * 1000000.0 / CLOCKS_PER_SEC;
-	double durD = (double)(endD - startD) * 1000000.0 / CLOCKS_PER_SEC;
+	double durV = (endV - startV) * 1000000.0 / CLOCKS_PER_SEC;
+	double durD = (endD - startD) * 1000000.0 / CLOCKS_PER_SEC;
 	
 	std::cout << "Time to process a range of " << _v.size() 
 			  << " elements with std::vector : " << durV << " us" << std::endl;

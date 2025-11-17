@@ -16,12 +16,15 @@ RPN &RPN::operator=(const RPN &other)
 
 RPN::~RPN() {}
 
+const char* RPN::InvalidExpressionException::what() const throw()
+{
+	return "Error";
+}
+
 int RPN::evaluate(const std::string &expr) const
 {
 	std::istringstream iss(expr);
-
 	std::stack<int> st;
-
 	std::string tok;
 
 	while (iss >> tok)
@@ -36,21 +39,18 @@ int RPN::evaluate(const std::string &expr) const
 			int a = st.top();
 			st.pop();
 
-			int r = 0;
 			if (tok == "+")
-				r = a + b;
+				st.push(a + b);
 			else if (tok == "-")
-				r = a - b;
+				st.push(a - b);
 			else if (tok == "*")
-				r = a * b;
+				st.push(a * b);
 			else if (tok == "/")
 			{
 				if (b == 0)
 					throw InvalidExpressionException();
-				r = a / b;
+				st.push(a / b);
 			}
-
-			st.push(r);
 		}
 		else
 		{

@@ -60,29 +60,48 @@ static bool validDate(const std::string &d)
 	return true;
 }
 
-static bool parseLine(const std::string &line, std::string &date, double &value, char sep)
+static std::string trim(const std::string &str)
+{
+	size_t start = 0;
+	size_t end = str.size();
+
+	while (start < end && (str[start] == ' ' || str[start] == '\t'))
+		start++;
+
+	while (end > start && (str[end - 1] == ' ' || str[end - 1] == '\t'))
+		end--;
+
+	std::string result = str.substr(start, end - start);
+	return result;
+}
+
+static bool parseDataLine(const std::string &line, std::string &date, double &value)
 {
 	std::istringstream iss(line);
-
-	if (!std::getline(iss, date, sep))
-		return false;
-
 	std::string valStr;
-	if (!std::getline(iss, valStr))
+
+	std::getline(iss, date, ',');
+	std::getline(iss, valStr);
+
+	std::istringstream vs(valStr);
+	vs >> value;
+
+	if (vs.fail())
 		return false;
 	
+	return true;
+}
 
-	while (date.size() && (date[0] == ' ' || date[0] == '\t'))
-		date.erase(0, 1);
+static bool parseInputLine(const std::string &line, std::string &date, double &value)
+{
+	std::istringstream iss(line);
+	std::string valStr;
 
-	while (date.size() && (date[date.size() - 1] == ' ' || date[date.size() - 1] == '\t'))
-		date.erase(date.size() - 1);
+	std::getline(iss, date, '|');
+	std::getline(iss, valStr);
 
-	while (valStr.size() && (valStr[0] == ' ' || valStr[0] == '\t'))
-		valStr.erase(0, 1);
-
-	while (valStr.size() && (valStr[valStr.size() - 1] == ' ' || valStr[valStr.size() - 1] == '\t'))
-		valStr.erase(valStr.size() - 1);
+	date = trim(date);
+	valStr = trim(valStr);
 
 	std::istringstream vs(valStr);
 	vs >> value;
@@ -105,15 +124,9 @@ bool BitcoinExchange::loadData(const std::string &filename)
 
 	while (std::getline(file, line))
 	{
-		if (line.empty())
-			continue;
-
 		std::string d;
 		double v;
-		if (!parseLine(line, d, v, ','))
-			continue;
-
-		if (!validDate(d))
+		if (!parseDataLine(line, d, v) || !validDate(d))
 			continue;
 
 		_rates[d] = v;
@@ -133,15 +146,11 @@ void BitcoinExchange::processInput(const std::string &filename) const
 
 	std::string line;
 	std::getline(file, line);
-
 	while (std::getline(file, line))
 	{
-		if (line.empty())
-			continue;
-
 		std::string d;
 		double v;
-		if (!parseLine(line, d, v, '|') || !validDate(d))
+		if (!parseInputLine(line, d, v) || !validDate(d))
 		{
 			std::cout << "Error: bad input => " << line << std::endl;
 			continue;
