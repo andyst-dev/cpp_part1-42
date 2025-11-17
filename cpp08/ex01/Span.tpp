@@ -16,6 +16,6 @@ template<typename Iterator>
 void Span::addRange(Iterator first, Iterator last)
 {
 	if (std::distance(first, last) + _data.size() > _capacity)
-		throw NotEnoughCapacityException();
+		throw SpanFullException();
 	_data.insert(_data.end(), first, last);
 }

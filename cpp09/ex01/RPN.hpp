@@ -12,14 +12,13 @@ class RPN
 		RPN(const RPN &other);
 		RPN &operator=(const RPN &other);
 		~RPN();
+		int evaluate(const std::string &expr) const;
 
 		class InvalidExpressionException : public std::exception
 		{
 			public:
 				virtual const char* what() const throw();
 		};
-
-		int evaluate(const std::string &expr) const;
 	};
 
 #endif

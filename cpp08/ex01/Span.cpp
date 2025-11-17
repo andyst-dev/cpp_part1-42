@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <climits>
 
-
 Span::Span(unsigned int n) : _capacity(n), _data() {}
 
 Span::Span(const Span &other) : _capacity(other._capacity), _data(other._data) {}
@@ -57,4 +56,14 @@ unsigned int Span::longestSpan() const
 	std::vector<int>::const_iterator maxIt = std::max_element(_data.begin(), _data.end());
 
 	return static_cast<unsigned int>(*maxIt - *minIt);
+}
+
+const char* Span::SpanFullException::what() const throw()
+{
+	return "Span is full";
+}
+
+const char* Span::NoSpanException::what() const throw()
+{
+	return "Not enough elements to calculate span";
 }

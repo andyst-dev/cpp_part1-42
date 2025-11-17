@@ -16,11 +16,6 @@ RPN &RPN::operator=(const RPN &other)
 
 RPN::~RPN() {}
 
-const char* RPN::InvalidExpressionException::what() const throw()
-{
-	return "Error";
-}
-
 int RPN::evaluate(const std::string &expr) const
 {
 	std::istringstream iss(expr);
@@ -65,4 +60,9 @@ int RPN::evaluate(const std::string &expr) const
 		throw InvalidExpressionException();
 
 	return st.top();
+}
+
+const char* RPN::InvalidExpressionException::what() const throw()
+{
+	return "Error";
 }

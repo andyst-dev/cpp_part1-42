@@ -27,28 +27,13 @@ class Span
 		class SpanFullException : public std::exception
 		{
 			public:
-				virtual const char* what() const throw()
-				{
-					return "Span is full";
-				}
+				virtual const char* what() const throw();
 		};
 
 		class NoSpanException : public std::exception
 		{
 			public:
-				virtual const char* what() const throw()
-				{
-					return "Not enough elements to calculate span";
-				}
-		};
-
-		class NotEnoughCapacityException : public std::exception
-		{
-			public:
-				virtual const char* what() const throw()
-				{
-					return "Not enough capacity";
-				}
+				virtual const char* what() const throw();
 		};
 };
 

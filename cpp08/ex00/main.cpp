@@ -21,7 +21,7 @@ int main(void)
 		std::vector<int>::iterator it = easyfind(v, 20);
 		std::cout << "Found : " << *it << std::endl;
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
 		std::cout << "Exception : " << e.what() << std::endl;
 	}
@@ -31,7 +31,7 @@ int main(void)
 		easyfind(v, 42);
 		std::cout << "Found : 42" << std::endl;
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
 		std::cout << "Exception : " << e.what() << std::endl;
 	}
@@ -52,7 +52,7 @@ int main(void)
 		std::list<int>::iterator it2 = easyfind(l, 3);
 		std::cout << "Found : " << *it2 << std::endl;
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
 		std::cout << "Exception : " << e.what() << std::endl;
 	}
@@ -62,7 +62,7 @@ int main(void)
 		easyfind(l, 99);
 		std::cout << "Found : 99" << std::endl;
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
 		std::cout << "Exception : " << e.what() << std::endl;
 	}

@@ -23,7 +23,7 @@ int main(void)
 		small.addNumber(42);
 		small.shortestSpan();
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
 		std::cout << "Exception attrapee : " << e.what() << std::endl;
 	}
@@ -43,9 +43,9 @@ int main(void)
 		std::cout << "Shortest span : " << big.shortestSpan() << std::endl;
 		std::cout << "Longest span : " << big.longestSpan() << std::endl;
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
-		std::cout << "Erreur dans le test de performance : " << e.what() << std::endl;
+		std::cout << "Exception attrapee : " << e.what() << std::endl;
 	}
 
 	std::cout << "\nTest depassement de capacite :" << std::endl;
@@ -56,9 +56,9 @@ int main(void)
 		tiny.addNumber(2);
 		tiny.addNumber(3);
 	}
-	catch (std::exception &e)
+	catch (const std::exception &e)
 	{
-		std::cout << "Exception capacite attrapee : " << e.what() << std::endl;
+		std::cout << "Exception attrapee : " << e.what() << std::endl;
 	}
 
 	return 0;
